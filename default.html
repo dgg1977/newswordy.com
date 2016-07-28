@@ -13,15 +13,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="title" content="{{site.title}}: {{title}}">
   <meta name="description" content="{{site.title}} is growing collection of news media buzzwords and their use (and misuse), updated every weekday.">
-  
+
   <title>{{site.title}}: {{title}}</title>
-   
+
   {% if type == 'post' %}<link rel="shorturl" href="http://wrdy.us/{{slug}}" />
   <link rev="canonical" href="http://wrdy.us/{{slug}}" />{% endif %}
   <link rel="alternate" type="application/rss+xml" title="Newswordy: Daily word (RSS)" href="http://feeds.feedburner.com/newswordy" />
-  <link rel="stylesheet" href="/assets/css/style.css"> 
+  <link rel="stylesheet" href="/assets/css/style.css">
   <link href="//cdn.symbolset.com/7d3894c317bef35c299947b00339ddacc469bb3e/symbolset.css" rel="stylesheet">
-  
+
   {% if post %}
   <meta property="og:image" content="{{post.permalink}}/thumbnail.png">
   <link rel="shortcut icon" href="{{post.permalink}}/favicon.png" type="image/png">
@@ -32,11 +32,11 @@
   <link rel="shortcut icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
   {% endif %}
-  
+
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
   <script src="/assets/js/libs/modernizr-1.7.min.js"></script>
   <script src="/assets/js/script.js"></script>
-	
+
 </head>
 <body class="{{type}} {{slug}}">
 
@@ -63,7 +63,7 @@
 			</article>
 		</section>
 	</div>
-  
+
 	<header>
 		<h1><a href="/" title="Go to today’s word">{{site.title}}</a></h1>
 		<nav>
@@ -73,8 +73,8 @@
 			</ul>
 		</nav>
 	</header>
-	
-	{% if post %}	
+
+	{% if post %}
     <article class="{{post.taxonomy.category.first}}" data-word="{{post.slug}}">
     	<header><h1>{% if type == 'post' %}{{post.title}}.{% else %}<a href="{{post.url}}">{{post.title}}.</a>{% endif %}</h1></header>
     	<p>{{post.meta.definition}}</p>
@@ -91,29 +91,35 @@
     		<a href="http://twitter.com/search?q={{post.slug}}" target="_blank" title="More tweets" class="next ss-navigateright right">More tweets</a>
     	</section>
     </article>
-    
-    <footer>
-    	<nav>
-    		<ul>
-    			{% if post.previous %}<li><a href="{{post.previous.url}}" title="Previous word: {{post.previous.title}}" class="previous ss-navigateleft">{{post.previous.title}}</a></li>{% endif %}
-    			{% if post.next %}<li><a href="{{post.next.url}}" title="Next word: {{post.next.title}}" class="next ss-navigateright right">{{post.next.title}}</a></li>{% endif %}
-    		</ul>
-    	</nav>
-    </footer>
   {% elsif posts %}
-  	{% for post in posts %}
+    {% assign sorted_posts = posts | sort:"title" %}
+  	{% for post in sorted_posts %}
   	<article class="{{post.taxonomy.category.first}}">
   		<header><h1><a href="{{post.url}}">{{post.title}}.</a></h1></header>
   	</article>
   	{% endfor %}
 	{% elsif tags %}
-  	{% for tag in tags %}
+	  {% assign sorted_tags = tags | sort:"value" %}
+  	{% for tag in sorted_tags %}
   	<article class="{{tag.value}}">
   		<header><h1><a href="{{tag.url}}">{{tag.value | capitalize}}.</a></h1></header>
   	</article>
   	{% endfor %}
 	{% endif %}
-	
+
+  <footer>
+  	<nav>
+  		<ul>
+      {% if post %}
+        {% if post.previous %}<li><a href="{{post.previous.url}}" title="Previous word: {{post.previous.title}}" class="previous ss-navigateleft">{{post.previous.title}}</a></li>{% endif %}
+        {% if post.next %}<li><a href="{{post.next.url}}" title="Next word: {{post.next.title}}" class="next ss-navigateright right">{{post.next.title}}</a></li>{% endif %}
+      {% else %}
+      <li><a href="/" class="previous ss-navigateleft">Home</a></li>
+      {% endif %}
+  		</ul>
+  	</nav>
+  </footer>
+
 	<script>
     var _gaq=[['_setAccount','UA-1666437-23'],['_trackPageview']];
     (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
